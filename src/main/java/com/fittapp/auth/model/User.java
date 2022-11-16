@@ -9,27 +9,21 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "user", uniqueConstraints = {
+@Table(name = "user_table", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"id"}),
         @UniqueConstraint(columnNames = {"email"})
 })
-@Getter
-@Setter
 public class User {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "fist_name")
-    private String fistName;
+    private String firstName;
 
-    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "password")
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -37,5 +31,5 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles;
-    
+
 }

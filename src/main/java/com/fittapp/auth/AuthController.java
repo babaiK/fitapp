@@ -63,7 +63,7 @@ public class AuthController {
 
         // create user object
         User user = new User();
-        user.setFistName(registerDTO.getFistName());
+        user.setFirstName(registerDTO.getFirstName());
         user.setLastName(registerDTO.getLastName());
         user.setEmail(registerDTO.getEmail());
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));

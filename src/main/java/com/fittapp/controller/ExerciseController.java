@@ -34,7 +34,7 @@ public class ExerciseController {
     }
 
     @GetMapping("/{id}")
-    public Exercise get(@PathVariable Integer id) {
+    public Exercise get(@PathVariable Long id) {
         Exercise exercise = exerciseRepository.findById(id).get();
         System.out.println("exercise: " + exercise);
         return exercise;
@@ -44,7 +44,7 @@ public class ExerciseController {
     public ResponseEntity<String> getRandomId() {
         Random random = new Random();
         Integer randomId = random.nextInt(2) +1;
-        Exercise exercise = exerciseRepository.findById(randomId).get();
+        Exercise exercise = exerciseRepository.findById(Long.valueOf(randomId)).get();
         System.out.println("exercise: " + exercise);
 
         return new ResponseEntity<>(exercise.getName(), HttpStatus.OK);
@@ -58,13 +58,12 @@ public class ExerciseController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Exercise> update(
-            @PathVariable Integer id,
+            @PathVariable Long id,
             @RequestBody Exercise details){
         Exercise exercise = exerciseRepository.findById(id).get();
         exercise.setName(details.getName());
         exercise.setName(details.getName());
-        exercise.setWeight(details.getWeight());
-
+        exercise.setMuscleGroupId((details.getMuscleGroupId()));
 
         final Exercise updated = exerciseRepository.save(exercise);
         return ResponseEntity.ok(updated);
@@ -72,7 +71,7 @@ public class ExerciseController {
     }
 
     @DeleteMapping("/{id}")
-    public Map<String, Boolean> delete(@PathVariable Integer id){
+    public Map<String, Boolean> delete(@PathVariable Long id){
         Exercise exercise = exerciseRepository.findById(id).get();
 
         exerciseRepository.delete(exercise);
