@@ -79,4 +79,18 @@ public class ExerciseController {
         response.put("deleted", Boolean.TRUE);
         return response;
     }
+
+    @GetMapping("/allpush")
+    public List<Exercise> getAllPush() {
+        List<Exercise> list= exerciseRepository.allPush();
+        return list;
+    }
+
+//    @GetMapping("/list")
+//    //@Transactional
+//    public List<Exercise> list(){
+//        List<Exercise> list = exerciseRepository.findAll();
+//        System.out.println(list.get(0));
+//        return list;
+//    }
 }
