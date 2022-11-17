@@ -2,16 +2,16 @@ package com.fittapp.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fittapp.model.Exercise;
+import com.fittapp.model.WorkoutPlanDay;
 import com.fittapp.repository.ExerciseRepository;
+import com.fittapp.repository.WorkoutPlanDayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.*;
 
 @RestController
 @RequestMapping("/exercise")
@@ -19,11 +19,16 @@ public class ExerciseController {
 
     @Autowired
     ExerciseRepository exerciseRepository;
+
+    @Autowired
+    WorkoutPlanDayRepository workoutPlanDayRepository;
     private final ObjectMapper jsonMapper;
 
     public ExerciseController(ObjectMapper jsonMapper) {
         this.jsonMapper = jsonMapper;
     }
+
+    //public Integer actualIndex = exerciseRepository.lastIndex()+1;
 
     @GetMapping("/list")
     //@Transactional
@@ -80,17 +85,177 @@ public class ExerciseController {
         return response;
     }
 
-    @GetMapping("/allpush")
-    public List<Exercise> getAllPush() {
-        List<Exercise> list= exerciseRepository.allPush();
-        return list;
+    @GetMapping("/generate/ppl")
+    public String getPpl() {
+
+        Integer actualIndex = exerciseRepository.lastIndex()+1;
+
+        List<Exercise> chest= exerciseRepository.addAllExercise(Collections.singleton(2), Collections.singleton(3));
+        List<Exercise> fshoulder = exerciseRepository.addAllExercise(Collections.singleton(4), Collections.singleton(1));
+        List<Exercise> triceps= exerciseRepository.addAllExercise(Collections.singleton(8), Collections.singleton(2));
+
+        WorkoutPlanDay wpdpush = new WorkoutPlanDay();
+        wpdpush.setEx1(chest.get(0).getId());
+        wpdpush.setEx2(chest.get(1).getId());
+        wpdpush.setEx3(chest.get(2).getId());
+        wpdpush.setEx4(fshoulder.get(0).getId());
+        wpdpush.setEx5(triceps.get(0).getId());
+        wpdpush.setEx6(triceps.get(1).getId());
+        wpdpush.setTypeOfPlan(1);
+        wpdpush.setJoinThisPlan(actualIndex);
+
+        workoutPlanDayRepository.save(wpdpush);
+
+        List<Exercise> back= exerciseRepository.addAllExercise(Collections.singleton(3), Collections.singleton(3));
+        List<Exercise> sshoulder = exerciseRepository.addAllExercise(Collections.singleton(5), Collections.singleton(1));
+        List<Exercise> biceps = exerciseRepository.addAllExercise(Collections.singleton(7), Collections.singleton(2));
+
+        WorkoutPlanDay wpdpull = new WorkoutPlanDay();
+        wpdpull.setEx1(back.get(0).getId());
+        wpdpull.setEx2(back.get(1).getId());
+        wpdpull.setEx3(back.get(2).getId());
+        wpdpull.setEx4(sshoulder.get(0).getId());
+        wpdpull.setEx5(biceps.get(0).getId());
+        wpdpull.setEx6(biceps.get(1).getId());
+        wpdpull.setTypeOfPlan(2);
+        wpdpull.setJoinThisPlan(actualIndex);
+
+        workoutPlanDayRepository.save(wpdpull);
+
+        List<Exercise> leg= exerciseRepository.addAllExercise(Collections.singleton(9), Collections.singleton(4));
+        List<Exercise> culve = exerciseRepository.addAllExercise(Collections.singleton(1), Collections.singleton(2));
+
+        WorkoutPlanDay wpdleg = new WorkoutPlanDay();
+        wpdleg.setEx1(leg.get(0).getId());
+        wpdleg.setEx2(leg.get(1).getId());
+        wpdleg.setEx3(leg.get(2).getId());
+        wpdleg.setEx4(leg.get(3).getId());
+        wpdleg.setEx5(culve.get(0).getId());
+        wpdleg.setEx6(culve.get(1).getId());
+        wpdleg.setTypeOfPlan(3);
+        wpdleg.setJoinThisPlan(actualIndex);
+
+        workoutPlanDayRepository.save(wpdleg);
+
+        return "Workout plan Push/Pull/Leg is ready!";
     }
 
-//    @GetMapping("/list")
-//    //@Transactional
-//    public List<Exercise> list(){
-//        List<Exercise> list = exerciseRepository.findAll();
-//        System.out.println(list.get(0));
-//        return list;
-//    }
+    @GetMapping("/generate/ublb")
+    public String getUblb(){
+
+        Integer actualIndex = exerciseRepository.lastIndex()+1;
+
+        List<Exercise> chest= exerciseRepository.addAllExercise(Collections.singleton(2), Collections.singleton(2));
+        List<Exercise> back = exerciseRepository.addAllExercise(Collections.singleton(3), Collections.singleton(2));
+        List<Exercise> triceps= exerciseRepository.addAllExercise(Collections.singleton(8), Collections.singleton(1));
+        List<Exercise> biceps= exerciseRepository.addAllExercise(Collections.singleton(7), Collections.singleton(1));
+
+        WorkoutPlanDay wpdupper = new WorkoutPlanDay();
+        wpdupper.setEx1(chest.get(0).getId());
+        wpdupper.setEx2(chest.get(1).getId());
+        wpdupper.setEx3(back.get(0).getId());
+        wpdupper.setEx4(back.get(1).getId());
+        wpdupper.setEx5(triceps.get(0).getId());
+        wpdupper.setEx6(biceps.get(0).getId());
+        wpdupper.setTypeOfPlan(4);
+        wpdupper.setJoinThisPlan(actualIndex);
+
+        workoutPlanDayRepository.save(wpdupper);
+
+        List<Exercise> leg= exerciseRepository.addAllExercise(Collections.singleton(9), Collections.singleton(4));
+        List<Exercise> culve = exerciseRepository.addAllExercise(Collections.singleton(1), Collections.singleton(2));
+
+        WorkoutPlanDay wpdlower = new WorkoutPlanDay();
+        wpdlower.setEx1(leg.get(0).getId());
+        wpdlower.setEx2(leg.get(1).getId());
+        wpdlower.setEx3(leg.get(2).getId());
+        wpdlower.setEx4(leg.get(3).getId());
+        wpdlower.setEx5(culve.get(0).getId());
+        wpdlower.setEx6(culve.get(1).getId());
+        wpdlower.setTypeOfPlan(5);
+        wpdlower.setJoinThisPlan(actualIndex);
+
+        workoutPlanDayRepository.save(wpdlower);
+
+        return "Workout plan Upper body - Lower body is ready!";
+    }
+
+    @GetMapping("/generate/bs")
+    public String getSb(){
+
+        Integer actualIndex = exerciseRepository.lastIndex()+1;
+
+        List<Exercise> chest= exerciseRepository.addAllExercise(Collections.singleton(2), Collections.singleton(6));
+        List<Exercise> back = exerciseRepository.addAllExercise(Collections.singleton(3), Collections.singleton(6));
+        List<Exercise> fshoulder = exerciseRepository.addAllExercise(Collections.singleton(4), Collections.singleton(2));
+        List<Exercise> sshoulder = exerciseRepository.addAllExercise(Collections.singleton(5), Collections.singleton(2));
+        List<Exercise> rshoulder = exerciseRepository.addAllExercise(Collections.singleton(6), Collections.singleton(2));
+        List<Exercise> biceps= exerciseRepository.addAllExercise(Collections.singleton(7), Collections.singleton(3));
+        List<Exercise> triceps= exerciseRepository.addAllExercise(Collections.singleton(8), Collections.singleton(3));
+        List<Exercise> leg= exerciseRepository.addAllExercise(Collections.singleton(9), Collections.singleton(4));
+        List<Exercise> culve = exerciseRepository.addAllExercise(Collections.singleton(1), Collections.singleton(2));
+
+        WorkoutPlanDay wpdchest = new WorkoutPlanDay();
+        wpdchest.setEx1(chest.get(0).getId());
+        wpdchest.setEx2(chest.get(1).getId());
+        wpdchest.setEx3(chest.get(2).getId());
+        wpdchest.setEx4(chest.get(3).getId());
+        wpdchest.setEx5(chest.get(4).getId());
+        wpdchest.setEx6(chest.get(5).getId());
+        wpdchest.setTypeOfPlan(6);
+        wpdchest.setJoinThisPlan(actualIndex);
+
+        workoutPlanDayRepository.save(wpdchest);
+
+        WorkoutPlanDay wpdback = new WorkoutPlanDay();
+        wpdback.setEx1(back.get(0).getId());
+        wpdback.setEx2(back.get(1).getId());
+        wpdback.setEx3(back.get(2).getId());
+        wpdback.setEx4(back.get(3).getId());
+        wpdback.setEx5(back.get(4).getId());
+        wpdback.setEx6(back.get(5).getId());
+        wpdback.setTypeOfPlan(7);
+        wpdback.setJoinThisPlan(actualIndex);
+
+        workoutPlanDayRepository.save(wpdback);
+
+        WorkoutPlanDay wpdshoulders = new WorkoutPlanDay();
+        wpdshoulders.setEx1(fshoulder.get(0).getId());
+        wpdshoulders.setEx2(fshoulder.get(1).getId());
+        wpdshoulders.setEx3(sshoulder.get(0).getId());
+        wpdshoulders.setEx4(sshoulder.get(1).getId());
+        wpdshoulders.setEx5(rshoulder.get(0).getId());
+        wpdshoulders.setEx6(rshoulder.get(1).getId());
+        wpdshoulders.setTypeOfPlan(8);
+        wpdshoulders.setJoinThisPlan(actualIndex);
+
+        workoutPlanDayRepository.save(wpdshoulders);
+
+        WorkoutPlanDay wpdsarms = new WorkoutPlanDay();
+        wpdsarms.setEx1(biceps.get(0).getId());
+        wpdsarms.setEx2(biceps.get(1).getId());
+        wpdsarms.setEx3(biceps.get(2).getId());
+        wpdsarms.setEx4(triceps.get(0).getId());
+        wpdsarms.setEx5(triceps.get(1).getId());
+        wpdsarms.setEx6(triceps.get(2).getId());
+        wpdsarms.setTypeOfPlan(9);
+        wpdsarms.setJoinThisPlan(actualIndex);
+
+        workoutPlanDayRepository.save(wpdsarms);
+
+        WorkoutPlanDay wpdleg = new WorkoutPlanDay();
+        wpdleg.setEx1(leg.get(0).getId());
+        wpdleg.setEx2(leg.get(1).getId());
+        wpdleg.setEx3(leg.get(2).getId());
+        wpdleg.setEx4(leg.get(3).getId());
+        wpdleg.setEx5(culve.get(0).getId());
+        wpdleg.setEx6(culve.get(1).getId());
+        wpdleg.setTypeOfPlan(10);
+        wpdleg.setJoinThisPlan(actualIndex);
+
+        workoutPlanDayRepository.save(wpdleg);
+
+        return "Workout plan Bro Split is ready!";
+    }
+
 }

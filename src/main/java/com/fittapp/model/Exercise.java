@@ -13,12 +13,12 @@ public class Exercise {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "name")
     private String name;
 
     @Column(name = "muscle_group_id")
-    private Long muscleGroupId;
+    private Integer muscleGroupId;
 
 }
