@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 @RestController
@@ -90,52 +89,9 @@ public class ExerciseController {
 
         Integer actualIndex = exerciseRepository.lastIndex()+1;
 
-        List<Exercise> chest= exerciseRepository.addAllExercise(Collections.singleton(2), Collections.singleton(3));
-        List<Exercise> fshoulder = exerciseRepository.addAllExercise(Collections.singleton(4), Collections.singleton(1));
-        List<Exercise> triceps= exerciseRepository.addAllExercise(Collections.singleton(8), Collections.singleton(2));
-
-        WorkoutPlanDay wpdpush = new WorkoutPlanDay();
-        wpdpush.setEx1(chest.get(0).getId());
-        wpdpush.setEx2(chest.get(1).getId());
-        wpdpush.setEx3(chest.get(2).getId());
-        wpdpush.setEx4(fshoulder.get(0).getId());
-        wpdpush.setEx5(triceps.get(0).getId());
-        wpdpush.setEx6(triceps.get(1).getId());
-        wpdpush.setTypeOfPlan(1);
-        wpdpush.setJoinThisPlan(actualIndex);
-
-        workoutPlanDayRepository.save(wpdpush);
-
-        List<Exercise> back= exerciseRepository.addAllExercise(Collections.singleton(3), Collections.singleton(3));
-        List<Exercise> sshoulder = exerciseRepository.addAllExercise(Collections.singleton(5), Collections.singleton(1));
-        List<Exercise> biceps = exerciseRepository.addAllExercise(Collections.singleton(7), Collections.singleton(2));
-
-        WorkoutPlanDay wpdpull = new WorkoutPlanDay();
-        wpdpull.setEx1(back.get(0).getId());
-        wpdpull.setEx2(back.get(1).getId());
-        wpdpull.setEx3(back.get(2).getId());
-        wpdpull.setEx4(sshoulder.get(0).getId());
-        wpdpull.setEx5(biceps.get(0).getId());
-        wpdpull.setEx6(biceps.get(1).getId());
-        wpdpull.setTypeOfPlan(2);
-        wpdpull.setJoinThisPlan(actualIndex);
-
-        workoutPlanDayRepository.save(wpdpull);
-
-        List<Exercise> leg= exerciseRepository.addAllExercise(Collections.singleton(9), Collections.singleton(4));
-        List<Exercise> culve = exerciseRepository.addAllExercise(Collections.singleton(1), Collections.singleton(2));
-
-        WorkoutPlanDay wpdleg = new WorkoutPlanDay();
-        wpdleg.setEx1(leg.get(0).getId());
-        wpdleg.setEx2(leg.get(1).getId());
-        wpdleg.setEx3(leg.get(2).getId());
-        wpdleg.setEx4(leg.get(3).getId());
-        wpdleg.setEx5(culve.get(0).getId());
-        wpdleg.setEx6(culve.get(1).getId());
-        wpdleg.setTypeOfPlan(3);
-        wpdleg.setJoinThisPlan(actualIndex);
-
-        workoutPlanDayRepository.save(wpdleg);
+        addPlan(actualIndex,2,3,4,1,8,2,1);
+        addPlan(actualIndex,3,3,5,1,7,2,2);
+        addLeg(actualIndex, 9,4,1,2,3);
 
         return "Workout plan Push/Pull/Leg is ready!";
     }
@@ -144,6 +100,7 @@ public class ExerciseController {
     public String getUblb(){
 
         Integer actualIndex = exerciseRepository.lastIndex()+1;
+
 
         List<Exercise> chest= exerciseRepository.addAllExercise(Collections.singleton(2), Collections.singleton(2));
         List<Exercise> back = exerciseRepository.addAllExercise(Collections.singleton(3), Collections.singleton(2));
@@ -162,20 +119,7 @@ public class ExerciseController {
 
         workoutPlanDayRepository.save(wpdupper);
 
-        List<Exercise> leg= exerciseRepository.addAllExercise(Collections.singleton(9), Collections.singleton(4));
-        List<Exercise> culve = exerciseRepository.addAllExercise(Collections.singleton(1), Collections.singleton(2));
-
-        WorkoutPlanDay wpdlower = new WorkoutPlanDay();
-        wpdlower.setEx1(leg.get(0).getId());
-        wpdlower.setEx2(leg.get(1).getId());
-        wpdlower.setEx3(leg.get(2).getId());
-        wpdlower.setEx4(leg.get(3).getId());
-        wpdlower.setEx5(culve.get(0).getId());
-        wpdlower.setEx6(culve.get(1).getId());
-        wpdlower.setTypeOfPlan(5);
-        wpdlower.setJoinThisPlan(actualIndex);
-
-        workoutPlanDayRepository.save(wpdlower);
+        addLeg(actualIndex, 9,4,1,2,5);
 
         return "Workout plan Upper body - Lower body is ready!";
     }
@@ -192,8 +136,6 @@ public class ExerciseController {
         List<Exercise> rshoulder = exerciseRepository.addAllExercise(Collections.singleton(6), Collections.singleton(2));
         List<Exercise> biceps= exerciseRepository.addAllExercise(Collections.singleton(7), Collections.singleton(3));
         List<Exercise> triceps= exerciseRepository.addAllExercise(Collections.singleton(8), Collections.singleton(3));
-        List<Exercise> leg= exerciseRepository.addAllExercise(Collections.singleton(9), Collections.singleton(4));
-        List<Exercise> culve = exerciseRepository.addAllExercise(Collections.singleton(1), Collections.singleton(2));
 
         WorkoutPlanDay wpdchest = new WorkoutPlanDay();
         wpdchest.setEx1(chest.get(0).getId());
@@ -243,6 +185,35 @@ public class ExerciseController {
 
         workoutPlanDayRepository.save(wpdsarms);
 
+        addLeg(actualIndex, 9,4,1,2,10);
+
+        return "Workout plan Bro Split is ready!";
+    }
+    public String addPlan(int actualIndex, int prio1id, int prio1limit, int prio2id, int prio2limit, int prio3id, int prio3limit, int typeOfPlan){
+
+        List<Exercise> prio1= exerciseRepository.addAllExercise(Collections.singleton(prio1id), Collections.singleton(prio1limit));
+        List<Exercise> prio2 = exerciseRepository.addAllExercise(Collections.singleton(prio2id), Collections.singleton(prio2limit));
+        List<Exercise> prio3= exerciseRepository.addAllExercise(Collections.singleton(prio3id), Collections.singleton(prio3limit));
+
+        WorkoutPlanDay workoutPlanDay = new WorkoutPlanDay();
+        workoutPlanDay.setEx1(prio1.get(0).getId());
+        workoutPlanDay.setEx2(prio1.get(1).getId());
+        workoutPlanDay.setEx3(prio1.get(2).getId());
+        workoutPlanDay.setEx4(prio2.get(0).getId());
+        workoutPlanDay.setEx5(prio3.get(0).getId());
+        workoutPlanDay.setEx6(prio3.get(1).getId());
+        workoutPlanDay.setTypeOfPlan(typeOfPlan);
+        workoutPlanDay.setJoinThisPlan(actualIndex);
+
+        workoutPlanDayRepository.save(workoutPlanDay);
+
+        return "Workoutplan is ready!";
+    }
+    public String addLeg(int actualIndex, int prio1id, int prio1limit, int prio2id, int prio2limit, int typeOfPlan){
+
+        List<Exercise> leg= exerciseRepository.addAllExercise(Collections.singleton(prio1id), Collections.singleton(prio1limit));
+        List<Exercise> culve = exerciseRepository.addAllExercise(Collections.singleton(prio2id), Collections.singleton(prio2limit));
+
         WorkoutPlanDay wpdleg = new WorkoutPlanDay();
         wpdleg.setEx1(leg.get(0).getId());
         wpdleg.setEx2(leg.get(1).getId());
@@ -250,12 +221,11 @@ public class ExerciseController {
         wpdleg.setEx4(leg.get(3).getId());
         wpdleg.setEx5(culve.get(0).getId());
         wpdleg.setEx6(culve.get(1).getId());
-        wpdleg.setTypeOfPlan(10);
+        wpdleg.setTypeOfPlan(typeOfPlan);
         wpdleg.setJoinThisPlan(actualIndex);
 
         workoutPlanDayRepository.save(wpdleg);
 
-        return "Workout plan Bro Split is ready!";
+        return "Workoutplan is ready!";
     }
-
 }
