@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class RegisterDTO {
+
     private String firstName;
     private String lastName;
     private String email;
