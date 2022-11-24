@@ -10,7 +10,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Collection;
 import java.util.List;
 
-public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
+public interface ExerciseRepository extends JpaRepository<Exercise, Integer> {
     @Query(value = "select join_this_plan from Workout_Plan_day wpd order by join_this_plan desc limit 1", nativeQuery = true)
     Integer lastIndex();
 
