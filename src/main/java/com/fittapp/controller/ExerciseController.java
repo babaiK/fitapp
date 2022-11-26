@@ -2,15 +2,13 @@ package com.fittapp.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fittapp.model.Exercise;
-import com.fittapp.model.WorkoutPlanDay;
 import com.fittapp.repository.ExerciseRepository;
-import com.fittapp.repository.WorkoutPlanDayRepository;
+//import com.fittapp.repository.WorkoutPlanDayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 @RestController

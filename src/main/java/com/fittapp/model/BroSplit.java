@@ -6,29 +6,24 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "workout_plan_day")
+@Table(name = "bro_split")
 @Getter
 @Setter
-public class WorkoutPlanDay {
+public class BroSplit {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "ex1")
+    @Column
     private Integer ex1;
-    @Column(name = "ex2")
+    @Column
     private Integer ex2;
-    @Column(name = "ex3")
+    @Column
     private Integer ex3;
-    @Column(name = "ex4")
+    @Column
     private Integer ex4;
-    @Column(name = "ex5")
+    @Column
     private Integer ex5;
-    @Column(name = "ex6")
+    @Column
     private Integer ex6;
-    @Column(name = "type_of_plan")
-    private Integer typeOfPlan;
-    @Column(name = "join_this_plan")
-    private Integer joinThisPlan;
-
 }

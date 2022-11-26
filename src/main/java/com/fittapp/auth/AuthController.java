@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -44,7 +44,8 @@ public class AuthController {
         this.jsonMapper = jsonMapper;
     }
 
-    @PostMapping("/signin")
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/login")
     public ResponseEntity<String> authenticateUser(@RequestBody LoginDTO loginDTO) throws JsonProcessingException {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDTO.getEmail(), loginDTO.getPassword()));
@@ -53,7 +54,8 @@ public class AuthController {
         return new ResponseEntity<>(this.jsonMapper.writeValueAsString(loginDTO), HttpStatus.OK);
     }
 
-    @PostMapping("/signup")
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/registration")
     public ResponseEntity<?> registerUser(@RequestBody RegisterDTO registerDTO) throws JsonProcessingException {
 
         // add check for email exists in DB
