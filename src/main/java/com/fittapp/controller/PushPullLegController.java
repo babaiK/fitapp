@@ -7,7 +7,6 @@ import com.fittapp.repository.PushPullLegRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +21,6 @@ public class PushPullLegController {
 
     @Autowired
     ExerciseRepository exerciseRepository;
-
 
     @GetMapping("")
     public String PushPullLeg(){
