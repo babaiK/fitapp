@@ -15,10 +15,9 @@ public class Exercise {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name")
-    private String name;
-
     @Column(name = "muscle_group_id")
     private Integer muscleGroupId;
 
+    @Column(name = "name")
+    private String name;
 }

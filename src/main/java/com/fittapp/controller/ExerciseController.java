@@ -55,14 +55,14 @@ public class ExerciseController {
         return saved;
     }
 
-    @PutMapping("/update/{id}")
+   // @PutMapping("/update/{id}")
+   @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Exercise> update(
             @PathVariable Integer id,
             @RequestBody Exercise details){
         Exercise exercise = exerciseRepository.findById(id).get();
+        exercise.setMuscleGroupId(details.getMuscleGroupId());
         exercise.setName(details.getName());
-        exercise.setName(details.getName());
-        exercise.setMuscleGroupId((details.getMuscleGroupId()));
 
         final Exercise updated = exerciseRepository.save(exercise);
         return ResponseEntity.ok(updated);
