@@ -39,16 +39,6 @@ public class ExerciseController {
         return exercise;
     }
 
-    @RequestMapping(value = "/randomId",method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
-    public ResponseEntity<String> getRandomId() {
-        Random random = new Random();
-        Integer randomId = random.nextInt(2) +1;
-        Exercise exercise = exerciseRepository.findById(randomId).get();
-        System.out.println("exercise: " + exercise);
-
-        return new ResponseEntity<>(exercise.getName(), HttpStatus.OK);
-    }
-
     @PostMapping("")
     public Exercise insert(@RequestBody Exercise exercise){
         Exercise saved = exerciseRepository.save(exercise);

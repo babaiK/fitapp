@@ -42,16 +42,6 @@ public class MuscleGroupController {
         return muscleGroup;
     }
 
-    @RequestMapping(value = "/randomId",method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
-    public ResponseEntity<String> getRandomId() {
-        Random random = new Random();
-        Integer randomId = random.nextInt(2) +1;
-        MuscleGroup muscleGroup = muscleGroupRepository.findById(Long.valueOf(randomId)).get();
-        System.out.println("exercise: " + muscleGroup);
-
-        return new ResponseEntity<>(muscleGroup.getName(), HttpStatus.OK);
-    }
-
     @PostMapping("")
     public MuscleGroup insert(@RequestBody MuscleGroup muscleGroup){
         MuscleGroup saved = muscleGroupRepository.save(muscleGroup);
